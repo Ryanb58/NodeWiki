@@ -8,6 +8,7 @@ var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
+
 mongoose.connect('mongodb://wikiUser:password@localhost:27017/wiki');
 
 var Page       = require('./app/models/page');
@@ -72,6 +73,25 @@ router.route('/pages/:page_id')
             res.send(err);
         }
         res.json(page);
+    })
+})
+.put(function(req, res){
+    Page.findById(req.params.page_id, function(err, page){
+        if(err)
+        {
+            res.send(err);
+        }
+
+        page.title = req.body.title;
+        page.content = req.body.content;
+
+        page.save(function(err){
+            if(err)
+            {
+                res.send(err);
+            }
+            res.json({message: 'Page Updated'});
+        })
     })
 });
 

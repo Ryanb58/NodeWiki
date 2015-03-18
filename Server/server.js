@@ -93,6 +93,17 @@ router.route('/pages/:page_id')
             res.json({message: 'Page Updated'});
         })
     })
+})
+.delete(function(req, res) {
+    Page.remove({
+        _id: req.params.page_id
+    }, function(err, page){
+        if(err)
+        {
+            res.send(err);
+        }
+        res.json({message: 'Successfully Deleted.'});
+    });
 });
 
 // REGISTER OUR ROUTES -------------------------------
